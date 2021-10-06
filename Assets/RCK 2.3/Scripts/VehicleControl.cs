@@ -264,7 +264,7 @@ public class VehicleControl : MonoBehaviour
 
     }
 
-
+    private float Stop;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -431,9 +431,9 @@ public class VehicleControl : MonoBehaviour
 
 
 
+    public int Gear;
 
 
-    
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -488,7 +488,7 @@ public class VehicleControl : MonoBehaviour
 
         myRigidbody.centerOfMass = carSetting.shiftCentre;
 
-
+        
 
 
         if (activeControl && LogitechGSDK.LogiUpdate() && LogitechGSDK.LogiIsConnected(0))
@@ -503,9 +503,33 @@ public class VehicleControl : MonoBehaviour
                 brake = false;
                 shift = false;
 
+                for (int i = 0; i < 128; i++)
+                {
+                    if (rec.rgbButtons[i] == 128)
+                    {
+                        if( i == 17)
+                        {
+                            ShiftDown();  
+                        }
+                        else if(i == 12)
+                        {
+                            ShiftUp();
+                        }
+                        else if(i == 18)
+                        {
+                            rec.lRz--;
+                            if(rec.lRz == 0)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
                 if (carWheels.wheels.frontWheelDrive || carWheels.wheels.backWheelDrive)
                 {
-                    steer = rec.lX / 364;
+                    steer = rec.lX;
                     print(steer + " " + rec.lX);
 
 
